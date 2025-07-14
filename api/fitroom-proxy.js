@@ -6,6 +6,11 @@ export default async function handler(req, res) {
   }
 
   const { model_url, prendas } = req.body;
+
+  // LOGS para depuración: imprime las URLs recibidas
+  console.log("model_url:", model_url);
+  console.log("prendas:", prendas);
+
   if (!model_url || !Array.isArray(prendas) || prendas.length === 0) {
     return res.status(400).json({ error: "Faltan campos: model_url, prendas (array)" });
   }
@@ -69,12 +74,12 @@ export default async function handler(req, res) {
 
     const fitroomJson = await fitroomRes.json();
     if (!fitroomRes.ok) {
-      console.error("FitRoom error:", fitroomJson);
+      console.error("Error de FitRoom:", fitroomJson);
       return res.status(fitroomRes.status).json(fitroomJson);
     }
     return res.status(200).json(fitroomJson);
   } catch (e) {
-    console.error("Proxy error:", e);
+    console.error("Error de Proxy:", e);
     return res.status(500).json({ error: e instanceof Error ? e.message : "Error desconocido" });
   }
 }
